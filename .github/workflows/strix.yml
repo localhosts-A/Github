@@ -1,0 +1,28 @@
+name: strix-penetration-test
+
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: "输入"
+        required: true
+        default: "默认"
+
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Install Strix
+        run: curl -sSL https://strix.ai/install | bash
+
+      - name: Run Strix
+        env:
+          STRIX_LLM: ${{ secrets.STRIX_LLM }}
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+          LLM_API_BASE: ${{ secrets.LLM_API_BASE }}
+
+        run: strix -n --target ${{ github.event.inputs.url }}
