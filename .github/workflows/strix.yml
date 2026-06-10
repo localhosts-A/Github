@@ -26,3 +26,10 @@ jobs:
           LLM_API_BASE: ${{ secrets.LLM_API_BASE }}
 
         run: strix -n --target ${{ github.event.inputs.url }}
+
+      - name: Upload strix_runs directory
+        uses: actions/upload-artifact@v4
+        with:
+          name: strix-runs # 下载时的压缩包文件名（下载后叫 strix-runs-artifact.zip）
+          path: ./strix_runs        # 你想要打包的目录路径（支持相对路径）
+          retention-days: 5  
